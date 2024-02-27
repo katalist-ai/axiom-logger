@@ -2,6 +2,13 @@ import axiom
 import rfc3339
 from datetime import datetime
 import json
+import os
+
+def getenv_with_error(key):
+    value = os.getenv(key)
+    if value is None:
+        raise ValueError(f"Environment variable {key} is not set! Provide env variable or pass it as an argument.")
+    return value
 
 class TestClient:
     def __init__(self, logger):
@@ -26,7 +33,11 @@ class TestClient:
             func(json.dumps(event, indent=2))
 
 class AxiomLogger:
-    def __init__(self, dataset_name, token, org_id, logger=None):
+    def __init__(self, dataset_name, token=None, org_id=None, logger=None):
+        if token is None:
+            token = getenv_with_error("AXIOM_TOKEN")
+        if org_id is None:
+            org_id = getenv_with_error("AXIOM_ORG_ID")
         if logger is None:
             self.client = axiom.Client(token, org_id)
         else:
