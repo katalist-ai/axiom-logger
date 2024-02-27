@@ -34,11 +34,11 @@ class TestClient:
 
 class AxiomLogger:
     def __init__(self, dataset_name, token=None, org_id=None, logger=None):
-        if token is None:
-            token = getenv_with_error("AXIOM_TOKEN")
-        if org_id is None:
-            org_id = getenv_with_error("AXIOM_ORG_ID")
         if logger is None:
+            if token is None:
+                token = getenv_with_error("AXIOM_TOKEN")
+            if org_id is None:
+                org_id = getenv_with_error("AXIOM_ORG_ID")
             self.client = axiom.Client(token, org_id)
         else:
             self.client = TestClient(logger)
