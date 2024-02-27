@@ -1,1 +1,1 @@
-from logger import AxiomLogger
+from .logger import AxiomLogger
